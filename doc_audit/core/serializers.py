@@ -68,8 +68,12 @@ from auditlog.models import LogEntry
 
 class LogEntrySerializer(serializers.ModelSerializer):
     actor = UserSerializer(read_only=True)
+    action = serializers.SerializerMethodField()
 
     class Meta:
         model = LogEntry
         fields = ["id", "actor", "action", "changes", "timestamp"]
+
+    def get_action(self, obj):
+        return obj.get_action_display()
 
